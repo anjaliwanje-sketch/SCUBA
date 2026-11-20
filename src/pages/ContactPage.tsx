@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Mail, MessageCircle, Send, CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
+import { Mail, MessageCircle, AlertCircle, ArrowUpRight } from 'lucide-react';
 import { ContactFormData, ServiceDivisionId } from '../types';
+
+// Official WhatsApp Vector Icon
+const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
 
 export const ContactPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -23,8 +35,9 @@ export const ContactPage: React.FC = () => {
 
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [endpointUnconfiguredNotice, setEndpointUnconfiguredNotice] = useState(false);
+  const [whatsAppOpened, setWhatsAppOpened] = useState(false);
+  const [isPopupBlocked, setIsPopupBlocked] = useState(false);
+  const [lastWhatsAppUrl, setLastWhatsAppUrl] = useState('');
 
   useEffect(() => {
     if (initialService) {
@@ -55,6 +68,59 @@ export const ContactPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const generateWhatsAppMessage = (data: ContactFormData): string => {
+    const serviceLabels: Record<string, string> = {
+      'digital-experience': 'Digital Experience & Development',
+      'search-ai-visibility': 'Search & AI Visibility (SEO · AEO · GEO)',
+      'ai-business-automation': 'AI & Business Automation',
+      'business-growth-consultancy': 'Business Growth Consultancy',
+    };
+
+    const budgetLabels: Record<string, string> = {
+      'under-5k': '< $5,000',
+      '5k-15k': '$5,000 – $15,000',
+      '15k-30k': '$15,000 – $30,000',
+      '30k-plus': '$30,000+',
+      'retainer': 'Monthly Retainer',
+    };
+
+    const timelineLabels: Record<string, string> = {
+      'immediate': 'Immediate (< 4 weeks)',
+      '1-3-months': '1 – 3 months',
+      '3-6-months': '3 – 6 months',
+      'flexible': 'Flexible / Planning stage',
+    };
+
+    const service = data.service
+      ? serviceLabels[data.service] || data.service
+      : 'General Project Discussion / Cross-Division';
+    const business = data.businessName.trim() || 'Not specified';
+    const phone = data.phone.trim() || 'Not specified';
+    const budget = data.budget
+      ? budgetLabels[data.budget] || data.budget
+      : 'Not specified';
+    const timeline = data.timeline
+      ? timelineLabels[data.timeline] || data.timeline
+      : 'Not specified';
+
+    return (
+      `Hello SCUBA! 👋\n\n` +
+      `I'd like to discuss a project with your team.\n\n` +
+      `CLIENT INFORMATION:\n` +
+      `- Full Name: ${data.fullName.trim()}\n` +
+      `- Business / Organisation: ${business}\n` +
+      `- Work Email: ${data.email.trim()}\n` +
+      `- Phone / WhatsApp: ${phone}\n\n` +
+      `PROJECT INFORMATION:\n` +
+      `- Interested Service: ${service}\n` +
+      `- Project Description: ${data.projectDescription.trim()}\n` +
+      `- Estimated Budget: ${budget}\n` +
+      `- Target Timeline: ${timeline}\n\n` +
+      `Looking forward to discussing my project with your team!\n\n` +
+      `— Submitted through the SCUBA Website.`
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -68,53 +134,47 @@ export const ContactPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    setEndpointUnconfiguredNotice(false);
 
+    // Format message and build WhatsApp URL with encodeURIComponent
+    const message = generateWhatsAppMessage(formData);
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/917205325430?text=${encodedMessage}`;
+
+    setLastWhatsAppUrl(whatsappUrl);
+    setWhatsAppOpened(true);
+
+    // If an optional form endpoint is configured, also post in background
     const formEndpoint = import.meta.env.VITE_FORM_ENDPOINT;
-
-    if (!formEndpoint) {
-      // PRD CON-4: "If unconfigured, show a clear 'not yet configured' message and offer WhatsApp."
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setEndpointUnconfiguredNotice(true);
-      }, 500);
-      return;
+    if (formEndpoint) {
+      try {
+        fetch(formEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }).catch(() => {
+          // Non-blocking background sync
+        });
+      } catch {
+        // Non-blocking
+      }
     }
 
+    // Attempt to open WhatsApp in a new tab/window
+    let popupBlocked = false;
     try {
-      const response = await fetch(formEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setSubmitSuccess(true);
-      } else {
-        setEndpointUnconfiguredNotice(true);
+      const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        popupBlocked = true;
       }
     } catch {
-      setEndpointUnconfiguredNotice(true);
-    } finally {
-      setIsSubmitting(false);
+      popupBlocked = true;
     }
-  };
 
-  const createWhatsAppPrefillUrl = () => {
-    const text = encodeURIComponent(
-      `Hello SCUBA!\n\nI would like to submit a project enquiry:\n` +
-      `• Name: ${formData.fullName || 'Not specified'}\n` +
-      `• Business: ${formData.businessName || 'Not specified'}\n` +
-      `• Email: ${formData.email || 'Not specified'}\n` +
-      `• Service: ${formData.service || 'General enquiry'}\n` +
-      `• Scope: ${formData.projectDescription || 'Ready to discuss'}\n` +
-      `• Budget: ${formData.budget || 'Open'}\n` +
-      `• Timeline: ${formData.timeline || 'Flexible'}`
-    );
-    return `https://wa.me/917205325430?text=${text}`;
+    setIsPopupBlocked(popupBlocked);
+    setIsSubmitting(false);
   };
 
   return (
@@ -140,264 +200,258 @@ export const ContactPage: React.FC = () => {
           
           {/* Form Container (7 cols) */}
           <div className="lg:col-span-7 bg-[#0E0E10] border border-[#242428] rounded-3xl p-8 sm:p-12 relative">
-            
-            {submitSuccess ? (
-              <div className="py-12 text-center space-y-6">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mx-auto">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h2 className="text-3xl font-bold text-white tracking-tight">
-                  Enquiry Received
-                </h2>
-                <p className="text-sm sm:text-base text-[#A6A6A6] max-w-md mx-auto leading-relaxed">
-                  Thank you, <strong className="text-white">{formData.fullName}</strong>. A senior SCUBA engineer will review your project parameters and reach out via email shortly.
-                </p>
-                <button
-                  onClick={() => {
-                    setSubmitSuccess(false);
-                    setFormData({
-                      fullName: '',
-                      businessName: '',
-                      email: '',
-                      phone: '',
-                      service: '',
-                      projectDescription: '',
-                      budget: '',
-                      timeline: '',
-                    });
-                  }}
-                  className="px-6 py-2.5 rounded-full bg-[#1A1A1A] hover:bg-scuba-violet text-white text-xs font-semibold tracking-wider transition-colors"
-                >
-                  Submit Another Enquiry
-                </button>
+            <form onSubmit={handleSubmit} noValidate className="space-y-6">
+              {/* Honeypot Spam Protection Field (Hidden) */}
+              <div className="hidden" aria-hidden="true">
+                <label htmlFor="website-hp">Leave this field blank</label>
+                <input
+                  type="text"
+                  id="website-hp"
+                  name="website-hp"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-6">
-                {/* Honeypot Spam Protection Field (Hidden) */}
-                <div className="hidden" aria-hidden="true">
-                  <label htmlFor="website-hp">Leave this field blank</label>
+
+              {/* WhatsApp Redirect Status Notification */}
+              {whatsAppOpened && (
+                <div className="p-5 rounded-2xl bg-[#150b20] border border-scuba-orchid/60 text-xs text-[#DCDCDC] space-y-3 animate-fadeIn">
+                  <div className="flex items-center space-x-2.5 text-white font-semibold text-sm">
+                    <WhatsAppIcon className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                    <span>WhatsApp Opened with Your Pre-Formatted Enquiry</span>
+                  </div>
+                  <p className="leading-relaxed text-[#A6A6A6]">
+                    Your project details have been formatted and transferred to WhatsApp. <strong className="text-white">Please press "Send" in WhatsApp</strong> to deliver your message directly to our engineering lead.
+                  </p>
+                  
+                  {isPopupBlocked ? (
+                    <div className="pt-2 border-t border-[#29173d] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <span className="text-amber-300 font-medium">
+                        Popup blocked by browser? Click to open directly:
+                      </span>
+                      <a
+                        href={lastWhatsAppUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-colors shadow-md"
+                      >
+                        <WhatsAppIcon className="w-4 h-4" />
+                        <span>Continue to WhatsApp</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="pt-1 flex items-center justify-between text-[11px] text-scuba-muted">
+                      <span>Did WhatsApp not open?</span>
+                      <a
+                        href={lastWhatsAppUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-scuba-orchid hover:underline inline-flex items-center space-x-1"
+                      >
+                        <span>Click here to launch manually</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Name & Business */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="fullName" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Full Name <span className="text-scuba-orchid">*</span>
+                  </label>
                   <input
                     type="text"
-                    id="website-hp"
-                    name="website-hp"
-                    value={honeypot}
-                    onChange={(e) => setHoneypot(e.target.value)}
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-                </div>
-
-                {/* Unconfigured Notice Box per PRD CON-4 */}
-                {endpointUnconfiguredNotice && (
-                  <div className="p-5 rounded-2xl bg-[#19111c] border border-scuba-orchid/60 text-xs text-[#DCDCDC] space-y-3">
-                    <div className="flex items-center space-x-2 text-scuba-orchid font-semibold text-sm">
-                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                      <span>Form Endpoint Not Yet Configured</span>
-                    </div>
-                    <p>
-                      The production form backend (`VITE_FORM_ENDPOINT`) is currently in setup mode. You can instantly transmit your completed details directly to our engineering lead via WhatsApp:
-                    </p>
-                    <a
-                      href={createWhatsAppPrefillUrl()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-colors"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Send My Form Data via WhatsApp</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                )}
-
-                {/* Name & Business */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="fullName" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Full Name <span className="text-scuba-orchid">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="fullName"
-                      value={formData.fullName}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      placeholder="e.g. Alex Morgan"
-                      aria-required="true"
-                      aria-invalid={!!errors.fullName}
-                      aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
-                        errors.fullName ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
-                      }`}
-                    />
-                    {errors.fullName && (
-                      <p id="fullName-error" className="text-[11px] text-red-400 mt-1.5">
-                        {errors.fullName}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="businessName" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Business or Organisation
-                    </label>
-                    <input
-                      type="text"
-                      id="businessName"
-                      value={formData.businessName}
-                      onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                      placeholder="e.g. Acme Technologies"
-                      className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Email & Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Work Email <span className="text-scuba-orchid">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="alex@company.com"
-                      aria-required="true"
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? 'email-error' : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
-                        errors.email ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
-                      }`}
-                    />
-                    {errors.email && (
-                      <p id="email-error" className="text-[11px] text-red-400 mt-1.5">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Phone / WhatsApp Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Service Dropdown */}
-                <div>
-                  <label htmlFor="service" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                    Primary Service Division Interested In
-                  </label>
-                  <select
-                    id="service"
-                    value={formData.service}
-                    onChange={(e) => setFormData({ ...formData, service: e.target.value as ServiceDivisionId })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors"
-                  >
-                    <option value="">General Project Discussion / Cross-Division</option>
-                    <option value="digital-experience">Digital Experience & Development</option>
-                    <option value="search-ai-visibility">Search & AI Visibility (SEO · AEO · GEO)</option>
-                    <option value="ai-business-automation">AI & Business Automation</option>
-                    <option value="business-growth-consultancy">Business Growth Consultancy</option>
-                  </select>
-                </div>
-
-                {/* Project Description */}
-                <div>
-                  <label htmlFor="projectDescription" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                    Project Description & Requirements <span className="text-scuba-orchid">*</span>
-                  </label>
-                  <textarea
-                    id="projectDescription"
-                    rows={5}
-                    value={formData.projectDescription}
-                    onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
-                    placeholder="Tell us about the idea, current bottlenecks, desired timeline, or key technical expectations..."
+                    id="fullName"
+                    value={formData.fullName}
+                    onChange={(e) => {
+                      setFormData({ ...formData, fullName: e.target.value });
+                      if (errors.fullName) setErrors({ ...errors, fullName: undefined });
+                    }}
+                    placeholder="e.g. Alex Morgan"
                     aria-required="true"
-                    aria-invalid={!!errors.projectDescription}
-                    aria-describedby={errors.projectDescription ? 'desc-error' : undefined}
+                    aria-invalid={!!errors.fullName}
+                    aria-describedby={errors.fullName ? 'fullName-error' : undefined}
                     className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
-                      errors.projectDescription ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
+                      errors.fullName ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
                     }`}
                   />
-                  {errors.projectDescription && (
-                    <p id="desc-error" className="text-[11px] text-red-400 mt-1.5">
-                      {errors.projectDescription}
+                  {errors.fullName && (
+                    <p id="fullName-error" className="text-[11px] text-red-400 mt-1.5 flex items-center space-x-1">
+                      <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                      <span>{errors.fullName}</span>
                     </p>
                   )}
                 </div>
 
-                {/* Budget & Timeline (Optional) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="budget" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Estimated Budget (Optional)
-                    </label>
-                    <select
-                      id="budget"
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors"
-                    >
-                      <option value="">Select an estimated range</option>
-                      <option value="under-5k">&lt; $5,000</option>
-                      <option value="5k-15k">$5,000 – $15,000</option>
-                      <option value="15k-30k">$15,000 – $30,000</option>
-                      <option value="30k-plus">$30,000+</option>
-                      <option value="retainer">Monthly Retainer</option>
-                    </select>
-                  </div>
+                <div>
+                  <label htmlFor="businessName" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Business or Organisation
+                  </label>
+                  <input
+                    type="text"
+                    id="businessName"
+                    value={formData.businessName}
+                    onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                    placeholder="e.g. Acme Technologies"
+                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
+                  />
+                </div>
+              </div>
 
-                  <div>
-                    <label htmlFor="timeline" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
-                      Target Timeline (Optional)
-                    </label>
-                    <select
-                      id="timeline"
-                      value={formData.timeline}
-                      onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors"
-                    >
-                      <option value="">Select expected timeline</option>
-                      <option value="immediate">Immediate (&lt; 4 weeks)</option>
-                      <option value="1-3-months">1 – 3 months</option>
-                      <option value="3-6-months">3 – 6 months</option>
-                      <option value="flexible">Flexible / Planning stage</option>
-                    </select>
-                  </div>
+              {/* Email & Phone */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="email" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Work Email <span className="text-scuba-orchid">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (errors.email) setErrors({ ...errors, email: undefined });
+                    }}
+                    placeholder="alex@company.com"
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                    className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
+                      errors.email ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
+                    }`}
+                  />
+                  {errors.email && (
+                    <p id="email-error" className="text-[11px] text-red-400 mt-1.5 flex items-center space-x-1">
+                      <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                      <span>{errors.email}</span>
+                    </p>
+                  )}
                 </div>
 
-                {/* Submit Button (PRD CON-3) */}
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-4 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.2em] rounded-xl transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
-                  >
-                    {isSubmitting ? (
-                      <span>TRANSMITTING ENQUIRY...</span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        <span>SEND PROJECT ENQUIRY</span>
-                      </>
-                    )}
-                  </button>
-                  <p className="text-[11px] text-scuba-muted text-center mt-3">
-                    By submitting, you agree to our confidential handling of your data.
+                <div>
+                  <label htmlFor="phone" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Phone / WhatsApp Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+1 (555) 000-0000"
+                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Service Dropdown */}
+              <div>
+                <label htmlFor="service" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                  Primary Service Division Interested In
+                </label>
+                <select
+                  id="service"
+                  value={formData.service}
+                  onChange={(e) => setFormData({ ...formData, service: e.target.value as ServiceDivisionId })}
+                  className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
+                >
+                  <option value="">General Project Discussion / Cross-Division</option>
+                  <option value="digital-experience">Digital Experience & Development</option>
+                  <option value="search-ai-visibility">Search & AI Visibility (SEO · AEO · GEO)</option>
+                  <option value="ai-business-automation">AI & Business Automation</option>
+                  <option value="business-growth-consultancy">Business Growth Consultancy</option>
+                </select>
+              </div>
+
+              {/* Project Description */}
+              <div>
+                <label htmlFor="projectDescription" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                  Project Description & Requirements <span className="text-scuba-orchid">*</span>
+                </label>
+                <textarea
+                  id="projectDescription"
+                  rows={5}
+                  value={formData.projectDescription}
+                  onChange={(e) => {
+                    setFormData({ ...formData, projectDescription: e.target.value });
+                    if (errors.projectDescription) setErrors({ ...errors, projectDescription: undefined });
+                  }}
+                  placeholder="Tell us about the idea, current bottlenecks, desired timeline, or key technical expectations..."
+                  aria-required="true"
+                  aria-invalid={!!errors.projectDescription}
+                  aria-describedby={errors.projectDescription ? 'desc-error' : undefined}
+                  className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
+                    errors.projectDescription ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
+                  }`}
+                />
+                {errors.projectDescription && (
+                  <p id="desc-error" className="text-[11px] text-red-400 mt-1.5 flex items-center space-x-1">
+                    <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                    <span>{errors.projectDescription}</span>
                   </p>
+                )}
+              </div>
+
+              {/* Budget & Timeline (Optional) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="budget" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Estimated Budget (Optional)
+                  </label>
+                  <select
+                    id="budget"
+                    value={formData.budget}
+                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
+                  >
+                    <option value="">Select an estimated range</option>
+                    <option value="under-5k">&lt; $5,000</option>
+                    <option value="5k-15k">$5,000 – $15,000</option>
+                    <option value="15k-30k">$15,000 – $30,000</option>
+                    <option value="30k-plus">$30,000+</option>
+                    <option value="retainer">Monthly Retainer</option>
+                  </select>
                 </div>
-              </form>
-            )}
+
+                <div>
+                  <label htmlFor="timeline" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
+                    Target Timeline (Optional)
+                  </label>
+                  <select
+                    id="timeline"
+                    value={formData.timeline}
+                    onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
+                  >
+                    <option value="">Select expected timeline</option>
+                    <option value="immediate">Immediate (&lt; 4 weeks)</option>
+                    <option value="1-3-months">1 – 3 months</option>
+                    <option value="3-6-months">3 – 6 months</option>
+                    <option value="flexible">Flexible / Planning stage</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Submit Button with WhatsApp Icon (Preserves existing styling & branding) */}
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.2em] rounded-xl transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2.5 disabled:opacity-50 disabled:cursor-not-allowed uppercase cursor-pointer group"
+                >
+                  <WhatsAppIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                  <span>SEND PROJECT ENQUIRY</span>
+                </button>
+                <p className="text-[11px] text-scuba-muted text-center mt-3">
+                  Clicking will open WhatsApp with your pre-formatted enquiry. Your form inputs remain saved here.
+                </p>
+              </div>
+            </form>
           </div>
 
           {/* Right Direct Details Column (5 cols) */}
