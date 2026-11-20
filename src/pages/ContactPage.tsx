@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Mail, MessageCircle, AlertCircle, ArrowUpRight } from 'lucide-react';
 import { ContactFormData, ServiceDivisionId } from '../types';
+import { InternationalPhoneInput } from '../components/common/InternationalPhoneInput';
 
 // Official WhatsApp Vector Icon
 const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
@@ -62,6 +63,13 @@ export const ContactPage: React.FC = () => {
       newErrors.projectDescription = 'Please provide a brief description of your project or enquiry.';
     } else if (formData.projectDescription.trim().length < 15) {
       newErrors.projectDescription = 'Please provide at least 15 characters to help us understand your scope.';
+    }
+
+    if (formData.phone.trim()) {
+      const digitsOnly = formData.phone.replace(/\D/g, '');
+      if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+        newErrors.phone = 'Please enter a valid international phone number.';
+      }
     }
 
     setErrors(newErrors);
@@ -338,14 +346,29 @@ export const ContactPage: React.FC = () => {
                   <label htmlFor="phone" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
                     Phone / WhatsApp Number
                   </label>
-                  <input
-                    type="tel"
+                  <InternationalPhoneInput
                     id="phone"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+1 (555) 000-0000"
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
+                    onChange={(newPhone, meta) => {
+                      setFormData((prev) => ({ ...prev, phone: newPhone }));
+                      if (newPhone && !meta.isValid) {
+                        setErrors((prev) => ({
+                          ...prev,
+                          phone: 'Please enter a valid international phone number.',
+                        }));
+                      } else if (errors.phone) {
+                        setErrors((prev) => ({ ...prev, phone: undefined }));
+                      }
+                    }}
+                    error={errors.phone}
+                    placeholder="98765 43210"
                   />
+                  {errors.phone && (
+                    <p id="phone-error" className="text-[11px] text-red-400 mt-1.5 flex items-center space-x-1">
+                      <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                      <span>{errors.phone}</span>
+                    </p>
+                  )}
                 </div>
               </div>
 
