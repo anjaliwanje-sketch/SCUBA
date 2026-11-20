@@ -55,7 +55,7 @@ export const ContactPage: React.FC = () => {
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required.';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+    } else if (!/^[^\s@]+@[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Please enter a valid email address.';
     }
 
@@ -176,29 +176,29 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <main id="main-content" className="w-full pt-12 pb-24">
+    <main id="main-content" className="w-full pt-8 sm:pt-12 pb-20 sm:pb-24">
       {/* Hero Header */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 py-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold tracking-widest uppercase mb-6">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold tracking-widest uppercase mb-6 font-mono">
             Project Enquiries
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-[1.1]">
             Let's turn your idea into reality<span className="text-scuba-orchid">.</span>
           </h1>
-          <p className="text-lg sm:text-xl text-[#A6A6A6] leading-relaxed max-w-3xl">
+          <p className="text-base sm:text-lg md:text-xl text-[#A6A6A6] leading-relaxed max-w-3xl">
             Whether you have a fully formed technical specification or an early conceptual challenge, tell us about your goals. We review every enquiry within 24 hours.
           </p>
         </div>
       </section>
 
       {/* Main Grid: Form + Direct Contact Cards */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* Form Container (7 cols) */}
-          <div className="lg:col-span-7 bg-[#0E0E10] border border-[#242428] rounded-3xl p-8 sm:p-12 relative">
-            <form onSubmit={handleSubmit} noValidate className="space-y-6">
+          <div className="lg:col-span-7 bg-[#0E0E10] border border-[#242428] rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 relative">
+            <form onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6">
               {/* Honeypot Spam Protection Field (Hidden) */}
               <div className="hidden" aria-hidden="true">
                 <label htmlFor="website-hp">Leave this field blank</label>
@@ -215,7 +215,7 @@ export const ContactPage: React.FC = () => {
 
               {/* WhatsApp Redirect Status Notification */}
               {whatsAppOpened && (
-                <div className="p-5 rounded-2xl bg-[#150b20] border border-scuba-orchid/60 text-xs text-[#DCDCDC] space-y-3 animate-fadeIn">
+                <div className="p-4 sm:p-5 rounded-2xl bg-[#150b20] border border-scuba-orchid/60 text-xs text-[#DCDCDC] space-y-3 animate-fadeIn">
                   <div className="flex items-center space-x-2.5 text-white font-semibold text-sm">
                     <WhatsAppIcon className="w-5 h-5 text-emerald-400 flex-shrink-0" />
                     <span>WhatsApp Opened with Your Pre-Formatted Enquiry</span>
@@ -233,7 +233,7 @@ export const ContactPage: React.FC = () => {
                         href={lastWhatsAppUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-colors shadow-md"
+                        className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-colors shadow-md min-h-[44px]"
                       >
                         <WhatsAppIcon className="w-4 h-4" />
                         <span>Continue to WhatsApp</span>
@@ -241,13 +241,13 @@ export const ContactPage: React.FC = () => {
                       </a>
                     </div>
                   ) : (
-                    <div className="pt-1 flex items-center justify-between text-[11px] text-scuba-muted">
+                    <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-scuba-muted gap-2">
                       <span>Did WhatsApp not open?</span>
                       <a
                         href={lastWhatsAppUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-scuba-orchid hover:underline inline-flex items-center space-x-1"
+                        className="text-scuba-orchid hover:underline inline-flex items-center space-x-1 py-1"
                       >
                         <span>Click here to launch manually</span>
                         <ArrowUpRight className="w-3 h-3" />
@@ -258,7 +258,7 @@ export const ContactPage: React.FC = () => {
               )}
 
               {/* Name & Business */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="fullName" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
                     Full Name <span className="text-scuba-orchid">*</span>
@@ -275,7 +275,7 @@ export const ContactPage: React.FC = () => {
                     aria-required="true"
                     aria-invalid={!!errors.fullName}
                     aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-                    className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
+                    className={`w-full h-[48px] px-4 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
                       errors.fullName ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
                     }`}
                   />
@@ -297,13 +297,13 @@ export const ContactPage: React.FC = () => {
                     value={formData.businessName}
                     onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                     placeholder="e.g. Acme Technologies"
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
+                    className="w-full h-[48px] px-4 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
                   />
                 </div>
               </div>
 
               {/* Email & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="email" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
                     Work Email <span className="text-scuba-orchid">*</span>
@@ -320,7 +320,7 @@ export const ContactPage: React.FC = () => {
                     aria-required="true"
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? 'email-error' : undefined}
-                    className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
+                    className={`w-full h-[48px] px-4 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
                       errors.email ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
                     }`}
                   />
@@ -371,7 +371,7 @@ export const ContactPage: React.FC = () => {
                   id="service"
                   value={formData.service}
                   onChange={(e) => setFormData({ ...formData, service: e.target.value as ServiceDivisionId })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
+                  className="w-full h-[48px] px-4 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
                 >
                   <option value="">General Project Discussion / Cross-Division</option>
                   <option value="digital-experience">Digital Experience & Development</option>
@@ -398,7 +398,7 @@ export const ContactPage: React.FC = () => {
                   aria-required="true"
                   aria-invalid={!!errors.projectDescription}
                   aria-describedby={errors.projectDescription ? 'desc-error' : undefined}
-                  className={`w-full px-4 py-3 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
+                  className={`w-full p-4 rounded-xl bg-[#08080A] border text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none transition-colors ${
                     errors.projectDescription ? 'border-red-500 focus:border-red-500' : 'border-[#242428] focus:border-scuba-orchid'
                   }`}
                 />
@@ -411,7 +411,7 @@ export const ContactPage: React.FC = () => {
               </div>
 
               {/* Budget & Timeline (Optional) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="budget" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
                     Estimated Budget (Optional)
@@ -422,7 +422,7 @@ export const ContactPage: React.FC = () => {
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                     placeholder="e.g. $10,000 or ₹5,00,000"
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors font-sora"
+                    className="w-full h-[48px] px-4 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors font-sora"
                   />
                 </div>
 
@@ -434,7 +434,7 @@ export const ContactPage: React.FC = () => {
                     id="timeline"
                     value={formData.timeline}
                     onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
+                    className="w-full h-[48px] px-4 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
                   >
                     <option value="">Select expected timeline</option>
                     <option value="immediate">Immediate (&lt; 4 weeks)</option>
@@ -445,14 +445,14 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Submit Button with WhatsApp Icon (Preserves existing styling & branding) */}
-              <div className="pt-4">
+              {/* Submit Button with WhatsApp Icon */}
+              <div className="pt-2 sm:pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.2em] rounded-xl transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2.5 disabled:opacity-50 disabled:cursor-not-allowed uppercase cursor-pointer group"
+                  className="w-full py-4 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.2em] rounded-xl transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2.5 disabled:opacity-50 disabled:cursor-not-allowed uppercase cursor-pointer group min-h-[52px]"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                  <WhatsAppIcon className="w-4 h-4 text-white group-hover:scale-110 transition-transform flex-shrink-0" />
                   <span>SEND PROJECT ENQUIRY</span>
                 </button>
                 <p className="text-[11px] text-scuba-muted text-center mt-3">
@@ -463,22 +463,22 @@ export const ContactPage: React.FC = () => {
           </div>
 
           {/* Right Direct Details Column (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col space-y-6">
+          <div className="lg:col-span-5 flex flex-col space-y-4 sm:space-y-6">
             
             {/* WhatsApp Direct Card */}
-            <div className="p-8 rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 transition-colors">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6">
+            <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-5 sm:mb-6">
                 <MessageCircle className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Instant WhatsApp Channel</h3>
-              <p className="text-sm text-[#A6A6A6] leading-relaxed mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Instant WhatsApp Channel</h3>
+              <p className="text-xs sm:text-sm text-[#A6A6A6] leading-relaxed mb-5 sm:mb-6">
                 Need a rapid response or want to share documents directly? Chat live with our technical team.
               </p>
               <a
                 href="https://wa.me/917205325430?text=Hello%20SCUBA!%20I%20would%20like%20to%20discuss%20a%20project."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-emerald-400 hover:text-emerald-300 transition-colors py-1 min-h-[44px]"
               >
                 <span>OPEN WHATSAPP (+91 7205325430)</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -486,17 +486,17 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Direct Email Card */}
-            <div className="p-8 rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 transition-colors">
-              <div className="w-12 h-12 rounded-2xl bg-scuba-violet/20 border border-scuba-orchid/40 flex items-center justify-center text-scuba-orchid mb-6">
+            <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-scuba-violet/20 border border-scuba-orchid/40 flex items-center justify-center text-scuba-orchid mb-5 sm:mb-6">
                 <Mail className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Direct Agency Communications</h3>
-              <p className="text-sm text-[#A6A6A6] leading-relaxed mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Direct Agency Communications</h3>
+              <p className="text-xs sm:text-sm text-[#A6A6A6] leading-relaxed mb-5 sm:mb-6">
                 For RFP submissions, NDA signing requests, and formal vendor evaluations.
               </p>
               <a
                 href="mailto:contact@scuba.agency"
-                className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-scuba-orchid hover:text-white transition-colors"
+                className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-scuba-orchid hover:text-white transition-colors py-1 min-h-[44px]"
               >
                 <span>contact@scuba.agency</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -504,7 +504,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Response Promise */}
-            <div className="p-6 rounded-2xl bg-[#08080A] border border-[#1F1F24] text-xs text-scuba-muted space-y-2">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[#08080A] border border-[#1F1F24] text-xs text-scuba-muted space-y-2">
               <p className="font-semibold text-white">Our 24-Hour Review Protocol:</p>
               <p>
                 Every enquiry is reviewed directly by a senior engineer and strategy partner—never an automated autoresponder queue or junior salesperson.

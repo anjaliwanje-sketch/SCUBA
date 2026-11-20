@@ -9,18 +9,18 @@ export const ProcessTimeline: React.FC = () => {
   const currentStep = processSteps[selectedStepIndex];
 
   return (
-    <section className="w-full py-24 bg-[#050505] border-t border-[#1A1A1A] relative">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+    <section className="w-full py-16 sm:py-24 bg-[#050505] border-t border-[#1A1A1A] relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs font-semibold tracking-[0.25em] text-scuba-orchid uppercase mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <p className="text-xs font-semibold tracking-[0.25em] text-scuba-orchid uppercase mb-3 font-mono">
             How We Work
           </p>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 sm:mb-6">
             The 6-Step Engineering Lifecycle<span className="text-scuba-orchid">.</span>
           </h2>
-          <p className="text-base text-[#A6A6A6] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#A6A6A6] leading-relaxed">
             A repeatable, transparent process designed to minimize delivery risk and compress time to market.
           </p>
         </div>
@@ -37,7 +37,7 @@ export const ProcessTimeline: React.FC = () => {
                 <button
                   key={step.number}
                   onClick={() => setSelectedStepIndex(idx)}
-                  className={`flex flex-col items-center text-center p-3 rounded-xl transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-scuba-orchid ${
+                  className={`flex flex-col items-center text-center p-3 rounded-xl transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-scuba-orchid cursor-pointer min-h-[44px] ${
                     isSelected ? 'bg-[#0E0E10] border border-scuba-orchid' : 'hover:bg-[#0E0E10]/50'
                   }`}
                   aria-pressed={isSelected}
@@ -57,7 +57,7 @@ export const ProcessTimeline: React.FC = () => {
                   }`}>
                     {step.title}
                   </span>
-                  <span className="text-[10px] text-scuba-orchid font-medium mt-1">
+                  <span className="text-[10px] text-scuba-orchid font-medium mt-1 font-mono">
                     {step.duration}
                   </span>
                 </button>
@@ -67,14 +67,14 @@ export const ProcessTimeline: React.FC = () => {
         </div>
 
         {/* Mobile / Tablet Horizontal Scroll Selector */}
-        <div className="lg:hidden flex space-x-3 overflow-x-auto pb-6 mb-8 no-scrollbar">
+        <div className="lg:hidden flex space-x-2.5 overflow-x-auto pb-4 mb-6 sm:mb-8 no-scrollbar px-1">
           {processSteps.map((step, idx) => {
             const isSelected = selectedStepIndex === idx;
             return (
               <button
                 key={step.number}
                 onClick={() => setSelectedStepIndex(idx)}
-                className={`flex-shrink-0 px-4 py-2.5 rounded-full border text-xs font-semibold tracking-wide transition-all ${
+                className={`flex-shrink-0 px-4 py-2.5 rounded-full border text-xs font-semibold tracking-wide transition-all min-h-[44px] flex items-center cursor-pointer ${
                   isSelected
                     ? 'bg-scuba-violet border-scuba-orchid text-white shadow-glow-violet'
                     : 'bg-[#0E0E10] border-[#242428] text-scuba-muted hover:text-white'
@@ -94,40 +94,40 @@ export const ProcessTimeline: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.3 }}
-            className="w-full max-w-4xl mx-auto rounded-2xl bg-[#0E0E10] border border-[#242428] p-8 sm:p-12 shadow-2xl relative overflow-hidden"
+            className="w-full max-w-4xl mx-auto rounded-2xl bg-[#0E0E10] border border-[#242428] p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden"
           >
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8 pb-8 border-b border-[#1A1A1A]">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-6 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-[#1A1A1A]">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <span className="px-3 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/50 text-scuba-orchid font-mono text-xs font-semibold">
+                  <span className="px-2.5 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/50 text-scuba-orchid font-mono text-xs font-semibold">
                     Step {currentStep.number}
                   </span>
-                  <span className="text-xs font-semibold tracking-wider text-scuba-muted uppercase">
+                  <span className="text-xs font-semibold tracking-wider text-scuba-muted uppercase font-mono">
                     Phase: {currentStep.phase}
                   </span>
                 </div>
-                <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                <h3 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
                   {currentStep.title}
                 </h3>
               </div>
 
-              <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#141416] border border-[#242428] text-xs font-medium text-white self-start">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-[#141416] border border-[#242428] text-xs font-medium text-white self-start flex-shrink-0">
                 <Clock className="w-4 h-4 text-scuba-orchid" />
-                <span>Estimated: {currentStep.duration}</span>
+                <span className="font-mono">Est: {currentStep.duration}</span>
               </div>
             </div>
 
-            <p className="text-base sm:text-lg text-[#DCDCDC] leading-relaxed mb-8">
+            <p className="text-sm sm:text-base md:text-lg text-[#DCDCDC] leading-relaxed mb-6 sm:mb-8">
               {currentStep.description}
             </p>
 
             <div>
-              <p className="text-xs font-semibold tracking-widest text-white uppercase mb-4">
+              <p className="text-xs font-semibold tracking-widest text-white uppercase mb-4 font-mono">
                 Sprint Deliverables & Activities:
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {currentStep.details.map((detail) => (
-                  <div key={detail} className="flex items-start space-x-3 text-sm text-[#A6A6A6]">
+                  <div key={detail} className="flex items-start space-x-3 text-xs sm:text-sm text-[#A6A6A6]">
                     <div className="w-5 h-5 rounded-full bg-scuba-violet/30 border border-scuba-orchid/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Check className="w-3 h-3 text-scuba-orchid" />
                     </div>
@@ -138,14 +138,14 @@ export const ProcessTimeline: React.FC = () => {
             </div>
 
             {/* Step Footer Navigation */}
-            <div className="mt-10 pt-6 border-t border-[#1A1A1A] flex items-center justify-between">
-              <span className="text-xs text-scuba-muted">
+            <div className="mt-8 sm:mt-10 pt-6 border-t border-[#1A1A1A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <span className="text-xs text-scuba-muted font-mono">
                 Step {selectedStepIndex + 1} of {processSteps.length}
               </span>
               <div className="flex items-center space-x-4">
                 <Link
                   to="/process"
-                  className="text-xs font-semibold text-scuba-orchid hover:text-white transition-colors flex items-center space-x-1"
+                  className="text-xs font-semibold text-scuba-orchid hover:text-white transition-colors flex items-center space-x-1 py-1 min-h-[36px]"
                 >
                   <span>Read Full Methodology</span>
                   <ArrowRight className="w-3.5 h-3.5" />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, User, Share2, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, User, Share2 } from 'lucide-react';
 import { blogPostsData } from '../data/blog';
 import { CtaBanner } from '../components/home/CtaBanner';
 
@@ -11,9 +11,6 @@ export const BlogPostPage: React.FC = () => {
   if (!post) {
     return <Navigate to="/blog" replace />;
   }
-
-  // Related posts from same or other categories
-  const relatedPosts = blogPostsData.filter((p) => p.slug !== slug).slice(0, 2);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -28,12 +25,12 @@ export const BlogPostPage: React.FC = () => {
   };
 
   return (
-    <main id="main-content" className="w-full pt-12">
+    <main id="main-content" className="w-full pt-8 sm:pt-12">
       {/* Back button */}
-      <div className="max-w-4xl mx-auto px-6 sm:px-8 pt-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <Link
           to="/blog"
-          className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-scuba-muted hover:text-scuba-orchid transition-colors"
+          className="inline-flex items-center space-x-2 text-xs font-semibold tracking-wider text-scuba-muted hover:text-scuba-orchid transition-colors py-1 min-h-[44px]"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>BACK TO ALL INSIGHTS</span>
@@ -41,28 +38,28 @@ export const BlogPostPage: React.FC = () => {
       </div>
 
       {/* Article Header */}
-      <article className="max-w-4xl mx-auto px-6 sm:px-8 py-12">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className="px-3.5 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold uppercase tracking-widest">
+          <span className="px-3.5 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold uppercase tracking-widest font-mono">
             {post.category}
           </span>
-          <div className="flex items-center space-x-1.5 text-xs text-scuba-muted">
+          <div className="flex items-center space-x-1.5 text-xs text-scuba-muted font-mono">
             <Clock className="w-3.5 h-3.5 text-scuba-orchid" />
             <span>{post.readTime}</span>
           </div>
-          <div className="flex items-center space-x-1.5 text-xs text-scuba-muted">
+          <div className="flex items-center space-x-1.5 text-xs text-scuba-muted font-mono">
             <Calendar className="w-3.5 h-3.5 text-scuba-orchid" />
             <span>{post.date}</span>
           </div>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-8">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6 sm:mb-8">
           {post.title}
         </h1>
 
-        <div className="p-6 rounded-2xl bg-[#0E0E10] border border-[#242428] flex items-center justify-between mb-12">
-          <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 rounded-full bg-scuba-violet/30 border border-scuba-orchid/50 flex items-center justify-center text-scuba-orchid">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#0E0E10] border border-[#242428] flex items-center justify-between mb-8 sm:mb-12 gap-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="w-10 h-10 rounded-full bg-scuba-violet/30 border border-scuba-orchid/50 flex items-center justify-center text-scuba-orchid flex-shrink-0">
               <User className="w-5 h-5" />
             </div>
             <div>
@@ -73,7 +70,7 @@ export const BlogPostPage: React.FC = () => {
 
           <button
             onClick={handleShare}
-            className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-[#141416] border border-[#26262E] text-xs font-medium text-[#DCDCDC] hover:text-scuba-orchid hover:border-scuba-orchid transition-colors"
+            className="flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-[#141416] border border-[#26262E] text-xs font-medium text-[#DCDCDC] hover:text-scuba-orchid hover:border-scuba-orchid transition-colors min-h-[44px] cursor-pointer"
             aria-label="Share article"
           >
             <Share2 className="w-3.5 h-3.5" />
@@ -82,28 +79,28 @@ export const BlogPostPage: React.FC = () => {
         </div>
 
         {/* Article Body Content */}
-        <div className="prose prose-invert max-w-none space-y-6 text-[#DCDCDC] leading-relaxed text-base sm:text-lg">
+        <div className="prose prose-invert max-w-none space-y-6 text-[#DCDCDC] leading-relaxed text-sm sm:text-base md:text-lg">
           {post.content.split('\n\n').map((paragraph, index) => {
             const trimmed = paragraph.trim();
             if (trimmed.startsWith('# ')) {
-              return null; // already in h1
+              return null;
             }
             if (trimmed.startsWith('## ')) {
               return (
-                <h2 key={index} className="text-2xl sm:text-3xl font-bold text-white mt-12 mb-4 tracking-tight border-b border-[#1A1A1A] pb-3">
+                <h2 key={index} className="text-xl sm:text-2xl md:text-3xl font-bold text-white mt-10 sm:mt-12 mb-4 tracking-tight border-b border-[#1A1A1A] pb-3">
                   {trimmed.replace('## ', '')}
                 </h2>
               );
             }
             if (trimmed.startsWith('### ')) {
               return (
-                <h3 key={index} className="text-xl font-bold text-scuba-orchid mt-8 mb-2">
+                <h3 key={index} className="text-lg sm:text-xl font-bold text-scuba-orchid mt-6 sm:mt-8 mb-2">
                   {trimmed.replace('### ', '')}
                 </h3>
               );
             }
             if (trimmed.startsWith('---')) {
-              return <hr key={index} className="border-[#1A1A1A] my-8" />;
+              return <hr key={index} className="border-[#1A1A1A] my-6 sm:my-8" />;
             }
             if (trimmed.startsWith('> ')) {
               return (
@@ -131,7 +128,7 @@ export const BlogPostPage: React.FC = () => {
         </div>
 
         {/* Tags */}
-        <div className="mt-12 pt-8 border-t border-[#1A1A1A] flex flex-wrap gap-2">
+        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-[#1A1A1A] flex flex-wrap gap-2">
           {post.tags.map((tag) => (
             <span
               key={tag}
@@ -142,39 +139,6 @@ export const BlogPostPage: React.FC = () => {
           ))}
         </div>
       </article>
-
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <section className="w-full py-16 bg-[#050505] border-t border-[#1A1A1A]">
-          <div className="max-w-4xl mx-auto px-6 sm:px-8">
-            <h2 className="text-2xl font-bold text-white mb-8 tracking-tight">
-              Related Perspectives
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {relatedPosts.map((related) => (
-                <Link
-                  key={related.slug}
-                  to={`/blog/${related.slug}`}
-                  className="p-6 rounded-2xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 transition-all group flex flex-col justify-between"
-                >
-                  <div>
-                    <span className="text-[10px] font-semibold text-scuba-orchid uppercase mb-2 block">
-                      {related.category}
-                    </span>
-                    <h3 className="text-lg font-bold text-white group-hover:text-scuba-orchid transition-colors mb-2">
-                      {related.title}
-                    </h3>
-                  </div>
-                  <span className="text-xs text-scuba-muted group-hover:text-white flex items-center space-x-1 mt-4">
-                    <span>Read article</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* CTA */}
       <CtaBanner />

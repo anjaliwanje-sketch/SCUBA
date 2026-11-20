@@ -47,12 +47,10 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
     value: value || '',
     countries: defaultCountries,
     onChange: ({ phone: newPhone, country: currentCountry }) => {
-      // Determine if user entered actual subscriber digits beyond dialCode
       const digitsOnly = newPhone.replace(/\D/g, '');
       const dialCodeDigits = currentCountry.dialCode.replace(/\D/g, '');
       const hasSubscriberDigits = digitsOnly.length > dialCodeDigits.length;
 
-      // Basic E.164 validation (total digits 7 to 15, and sufficient subscriber digits)
       const isValid =
         !hasSubscriberDigits ||
         (digitsOnly.length >= dialCodeDigits.length + 6 && digitsOnly.length <= 15);
@@ -71,7 +69,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
     return defaultCountries.map((c) => parseCountry(c));
   }, []);
 
-  // Filter countries by search query (name or dial code)
+  // Filter countries by search query
   const filteredCountries = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) {
@@ -137,7 +135,6 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
     }, 50);
   };
 
-  // Keyboard navigation for dropdown
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       setIsOpen(false);
@@ -165,7 +162,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
           aria-expanded={isOpen}
           aria-label={`Select country. Currently selected: ${country.name} (+${country.dialCode})`}
           disabled={disabled}
-          className="h-full px-3 sm:px-3.5 flex items-center space-x-2 border-r border-[#242428] hover:bg-[#141418] rounded-l-xl transition-colors cursor-pointer select-none focus:outline-none flex-shrink-0"
+          className="h-full px-2.5 sm:px-3.5 flex items-center space-x-1.5 sm:space-x-2 border-r border-[#242428] hover:bg-[#141418] rounded-l-xl transition-colors cursor-pointer select-none focus:outline-none flex-shrink-0"
         >
           {/* Flag */}
           <div className="w-5 h-3.5 flex items-center justify-center overflow-hidden rounded-sm shadow-sm flex-shrink-0">
@@ -200,16 +197,16 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full h-full px-3.5 sm:px-4 bg-transparent text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none font-sora font-medium"
+          className="w-full h-full px-3 sm:px-4 bg-transparent text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none font-sora font-medium"
         />
       </div>
 
-      {/* Searchable Country Selector Dropdown */}
+      {/* Searchable Country Selector Dropdown - Max width capped to prevent mobile blowout */}
       {isOpen && (
         <div
           role="listbox"
           aria-label="Country list"
-          className="absolute top-full mt-2 left-0 z-50 w-full sm:w-80 max-h-80 bg-[#0E0E10] border border-[#2A2A30] rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn backdrop-blur-xl"
+          className="absolute top-full mt-2 left-0 z-50 w-full max-w-[calc(100vw-2rem)] sm:w-80 max-h-80 bg-[#0E0E10] border border-[#2A2A30] rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn backdrop-blur-xl"
         >
           {/* Search Header */}
           <div className="p-3 border-b border-[#242428] bg-[#121216]">
@@ -231,7 +228,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
           <div className="overflow-y-auto max-h-60 divide-y divide-[#18181D] scrollbar-thin scrollbar-thumb-scuba-violet/40">
             {preferredList.length > 0 && (
               <>
-                <div className="px-3 py-1.5 text-[10px] font-semibold text-scuba-orchid uppercase tracking-widest bg-[#100918]">
+                <div className="px-3 py-1.5 text-[10px] font-semibold text-scuba-orchid uppercase tracking-widest bg-[#100918] font-mono">
                   Popular Destinations
                 </div>
                 {preferredList.map((c) => {
@@ -243,7 +240,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
                       role="option"
                       aria-selected={isSelected}
                       onClick={() => handleSelectCountry(c.iso2)}
-                      className={`w-full px-3.5 py-2.5 flex items-center justify-between text-left transition-colors cursor-pointer text-xs ${
+                      className={`w-full px-3.5 py-2.5 flex items-center justify-between text-left transition-colors cursor-pointer text-xs min-h-[44px] ${
                         isSelected
                           ? 'bg-scuba-violet/25 text-white font-semibold'
                           : 'hover:bg-[#1A1A22] text-[#E6E6E6]'
@@ -269,7 +266,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
                     </button>
                   );
                 })}
-                <div className="px-3 py-1.5 text-[10px] font-semibold text-scuba-muted uppercase tracking-widest bg-[#0A0A0C]">
+                <div className="px-3 py-1.5 text-[10px] font-semibold text-scuba-muted uppercase tracking-widest bg-[#0A0A0C] font-mono">
                   All Countries
                 </div>
               </>
@@ -285,7 +282,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
                     role="option"
                     aria-selected={isSelected}
                     onClick={() => handleSelectCountry(c.iso2)}
-                    className={`w-full px-3.5 py-2.5 flex items-center justify-between text-left transition-colors cursor-pointer text-xs ${
+                    className={`w-full px-3.5 py-2.5 flex items-center justify-between text-left transition-colors cursor-pointer text-xs min-h-[44px] ${
                       isSelected
                         ? 'bg-scuba-violet/25 text-white font-semibold'
                         : 'hover:bg-[#1A1A22] text-[#E6E6E6]'

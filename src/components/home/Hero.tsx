@@ -5,35 +5,35 @@ import { ArrowRight } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col items-center justify-start overflow-hidden pt-10 sm:pt-14 pb-20 bg-[#000000]">
+    <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col items-center justify-start overflow-hidden pt-8 sm:pt-14 pb-16 sm:pb-20 bg-[#000000]">
       {/* Volumetric Violet Glow behind Hero content */}
       <div 
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[450px] rounded-full bg-scuba-violet/20 blur-[130px] pointer-events-none -z-10" 
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[650px] md:w-[900px] h-[300px] sm:h-[450px] rounded-full bg-scuba-violet/20 blur-[100px] sm:blur-[130px] pointer-events-none -z-10" 
         aria-hidden="true" 
       />
 
       {/* Main Container */}
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col items-center text-center z-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center z-10">
         
         {/* Eyebrow Pill */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-scuba-violet/40 bg-[#0E0E10]/80 mb-6 backdrop-blur-md"
+          className="inline-flex items-center space-x-2 px-3.5 sm:px-4 py-1.5 rounded-full border border-scuba-violet/40 bg-[#0E0E10]/80 mb-5 sm:mb-6 backdrop-blur-md max-w-full"
         >
-          <span className="w-2 h-2 rounded-full bg-scuba-orchid animate-pulse" />
-          <span className="text-[11px] sm:text-xs font-semibold tracking-[0.25em] text-scuba-lightgray uppercase">
+          <span className="w-2 h-2 rounded-full bg-scuba-orchid animate-pulse flex-shrink-0" />
+          <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] text-scuba-lightgray uppercase truncate">
             AI Growth & Engineering Agency
           </span>
         </motion.div>
 
-        {/* Primary Headline */}
+        {/* Primary Headline with fluid sizing */}
         <motion.h1
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.08] mb-6"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12] sm:leading-[1.08] mb-5 sm:mb-6"
         >
           We turn ideas into reality<span className="text-scuba-orchid">.</span>
         </motion.h1>
@@ -43,46 +43,45 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl text-[#A6A6A6] max-w-2xl mx-auto font-normal leading-relaxed mb-10"
+          className="text-sm sm:text-base md:text-lg lg:text-xl text-[#A6A6A6] max-w-2xl mx-auto font-normal leading-relaxed mb-8 sm:mb-10 px-2"
         >
           From strategic AI engineering to full-stack digital experiences and modern search visibility, we partner with ambitious businesses to dive deeper and build smarter.
         </motion.p>
 
-        {/* Dual Call to Actions */}
+        {/* Dual Call to Actions - full width on mobile, min 48px tap targets */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-12 sm:mb-16 z-20"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto mb-10 sm:mb-16 z-20"
         >
           <Link
             to="/contact"
-            className="w-full sm:w-auto px-8 py-3.5 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.18em] rounded-full transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2 group cursor-pointer"
+            className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 bg-scuba-violet hover:bg-scuba-orchid text-white font-semibold text-xs tracking-[0.18em] rounded-full transition-all duration-300 shadow-glow-violet hover:shadow-glow-orchid flex items-center justify-center space-x-2 group cursor-pointer min-h-[48px]"
           >
             <span>START YOUR PROJECT</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
             to="/services"
-            className="w-full sm:w-auto px-8 py-3.5 bg-[#0E0E10]/80 hover:bg-[#1A1A1A] border border-[#242428] hover:border-scuba-orchid text-[#DCDCDC] hover:text-white font-semibold text-xs tracking-[0.18em] rounded-full transition-all duration-300 backdrop-blur-sm cursor-pointer"
+            className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 bg-[#0E0E10]/80 hover:bg-[#1A1A1A] border border-[#242428] hover:border-scuba-orchid text-[#DCDCDC] hover:text-white font-semibold text-xs tracking-[0.18em] rounded-full transition-all duration-300 backdrop-blur-sm cursor-pointer min-h-[48px] flex items-center justify-center"
           >
             EXPLORE WHAT WE DO
           </Link>
         </motion.div>
 
         {/* Seamless Atmospheric Hero Centerpiece Visual */}
-        {/* As in reference image: no hard box borders, seamlessly feathering into the pure #000000 background */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-5xl mx-auto flex items-center justify-center -mt-4 sm:-mt-6"
+          className="relative w-full max-w-5xl mx-auto flex items-center justify-center -mt-2 sm:-mt-6"
         >
           {/* Volumetric backlight glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-scuba-violet/25 blur-[100px] rounded-full pointer-events-none -z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-scuba-violet/25 blur-[70px] sm:blur-[100px] rounded-full pointer-events-none -z-10" />
 
           {/* Ethereal Visual with organic edge feathering */}
-          <div className="relative w-full aspect-[16/9] sm:aspect-[16/9] max-w-4xl mx-auto overflow-hidden">
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-w-4xl mx-auto overflow-hidden rounded-xl sm:rounded-2xl">
             <img
               src="/scuba-hero-portrait.jpg"
               alt="SCUBA AI Growth & Engineering Visual with Orbiting Capabilities"
@@ -91,20 +90,15 @@ export const Hero: React.FC = () => {
               fetchPriority="high"
             />
 
-            {/* Seamless edge gradients: softly blends outer edges into the #000000 canvas without dimming text pills */}
-            {/* Top feather */}
-            <div className="absolute top-0 left-0 right-0 h-10 sm:h-14 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none" />
-            {/* Bottom feather */}
-            <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none" />
-            {/* Left feather */}
-            <div className="absolute top-0 bottom-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#000000] to-transparent pointer-events-none" />
-            {/* Right feather */}
-            <div className="absolute top-0 bottom-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#000000] to-transparent pointer-events-none" />
-            {/* Soft vignette feathering on extreme outer edges */}
+            {/* Seamless edge gradients: softly blends outer edges into the #000000 canvas */}
+            <div className="absolute top-0 left-0 right-0 h-8 sm:h-14 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-24 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none" />
+            <div className="absolute top-0 bottom-0 left-0 w-6 sm:w-16 bg-gradient-to-r from-[#000000] to-transparent pointer-events-none" />
+            <div className="absolute top-0 bottom-0 right-0 w-6 sm:w-16 bg-gradient-to-l from-[#000000] to-transparent pointer-events-none" />
             <div 
               className="absolute inset-0 pointer-events-none" 
               style={{
-                background: 'radial-gradient(ellipse at 50% 50%, transparent 75%, rgba(0,0,0,0.8) 100%)'
+                background: 'radial-gradient(ellipse at 50% 50%, transparent 72%, rgba(0,0,0,0.85) 100%)'
               }}
             />
           </div>

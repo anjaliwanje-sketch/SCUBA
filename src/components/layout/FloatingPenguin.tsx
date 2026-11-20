@@ -8,13 +8,13 @@ export const FloatingPenguin: React.FC = () => {
   return (
     <aside
       aria-label="Direct WhatsApp Enquiry"
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-end"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center justify-end"
     >
-      {/* Tooltip on hover/focus */}
+      {/* Tooltip on hover/focus - visible on larger screens to avoid mobile viewport clutter */}
       <div
         id="penguin-tooltip"
         role="tooltip"
-        className={`absolute right-full mr-3 px-3.5 py-1.5 bg-[#0E0E10] border border-scuba-violet/60 text-white text-xs font-medium rounded-full shadow-lg whitespace-nowrap transition-all duration-300 pointer-events-none ${
+        className={`hidden sm:block absolute right-full mr-3 px-3.5 py-1.5 bg-[#0E0E10] border border-scuba-violet/60 text-white text-xs font-medium rounded-full shadow-lg whitespace-nowrap transition-all duration-300 pointer-events-none ${
           isHovered
             ? 'opacity-100 translate-x-0'
             : 'opacity-0 translate-x-2'
@@ -36,7 +36,7 @@ export const FloatingPenguin: React.FC = () => {
         onBlur={() => setIsHovered(false)}
         aria-describedby="penguin-tooltip"
         aria-label="Chat with SCUBA team on WhatsApp"
-        className="group relative flex items-center justify-center w-[58px] h-[58px] sm:w-[70px] sm:h-[70px] rounded-full bg-[#000000] border-2 border-scuba-violet/60 hover:border-scuba-orchid shadow-glow-violet hover:shadow-glow-orchid transition-all duration-300 hover:scale-105 focus:outline-none focus-visible:ring-4 focus-visible:ring-scuba-orchid animate-float-gentle cursor-pointer p-1"
+        className="group relative flex items-center justify-center w-[52px] h-[52px] sm:w-[68px] sm:h-[68px] rounded-full bg-[#000000] border-2 border-scuba-violet/60 hover:border-scuba-orchid shadow-glow-violet hover:shadow-glow-orchid transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-scuba-orchid animate-float-gentle cursor-pointer p-1"
       >
         {/* Glow backdrop pulse */}
         <div className="absolute inset-0 rounded-full bg-scuba-violet/20 blur-md group-hover:bg-scuba-orchid/30 transition-all duration-300 pointer-events-none" />
@@ -47,12 +47,12 @@ export const FloatingPenguin: React.FC = () => {
           alt="SCUBA Penguin Mascot"
           className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(175,105,239,0.3)] select-none"
           loading="lazy"
-          width="70"
-          height="70"
+          width="68"
+          height="68"
         />
 
         {/* Online Pulse Indicator */}
-        <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#000000] rounded-full z-20">
+        <span className="absolute top-0 right-0 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-emerald-500 border-2 border-[#000000] rounded-full z-20">
           <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
         </span>
       </a>

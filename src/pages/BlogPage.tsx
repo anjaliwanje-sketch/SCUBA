@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Clock, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, Clock, ArrowRight } from 'lucide-react';
 import { blogCategories, blogPostsData } from '../data/blog';
 import { BlogCategory } from '../types';
 
@@ -19,25 +19,25 @@ export const BlogPage: React.FC = () => {
   });
 
   return (
-    <main id="main-content" className="w-full pt-12">
+    <main id="main-content" className="w-full pt-8 sm:pt-12">
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 py-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold tracking-widest uppercase mb-6">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-scuba-violet/20 border border-scuba-violet/40 text-scuba-orchid text-xs font-semibold tracking-widest uppercase mb-6 font-mono">
             Insights & Engineering Papers
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-[1.1]">
             Technical clarity in an era of AI noise<span className="text-scuba-orchid">.</span>
           </h1>
-          <p className="text-lg sm:text-xl text-[#A6A6A6] leading-relaxed max-w-3xl">
+          <p className="text-base sm:text-lg md:text-xl text-[#A6A6A6] leading-relaxed max-w-3xl">
             In-depth perspectives on artificial intelligence architecture, generative search optimization (AEO/GEO), automated pipelines, and full-stack engineering.
           </p>
         </div>
       </section>
 
       {/* Search & Categories Bar */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 mb-12">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6 pb-6 border-b border-[#1A1A1A]">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6 pb-6 border-b border-[#1A1A1A]">
           {/* Search Input */}
           <div className="relative w-full md:w-80">
             <Search className="w-4 h-4 text-scuba-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -46,17 +46,17 @@ export const BlogPage: React.FC = () => {
               placeholder="Search technical insights..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-full bg-[#0E0E10] border border-[#242428] text-xs text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors"
+              className="w-full pl-10 pr-4 py-3 rounded-full bg-[#0E0E10] border border-[#242428] text-xs text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors min-h-[44px]"
             />
           </div>
 
-          {/* Category Filter Pills (PRD BLOG-2: 6 categories) */}
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 no-scrollbar">
+          {/* Category Filter Pills */}
+          <div className="flex items-center space-x-2 overflow-x-auto pb-2 no-scrollbar px-1">
             <button
               onClick={() => setSelectedCategory('All')}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-4 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all min-h-[44px] flex items-center cursor-pointer ${
                 selectedCategory === 'All'
-                  ? 'bg-scuba-violet border border-scuba-orchid text-white'
+                  ? 'bg-scuba-violet border border-scuba-orchid text-white shadow-glow-violet'
                   : 'bg-[#0E0E10] border border-[#242428] text-scuba-muted hover:text-white'
               }`}
             >
@@ -66,9 +66,9 @@ export const BlogPage: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-4 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all min-h-[44px] flex items-center cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-scuba-violet border border-scuba-orchid text-white'
+                    ? 'bg-scuba-violet border border-scuba-orchid text-white shadow-glow-violet'
                     : 'bg-[#0E0E10] border border-[#242428] text-scuba-muted hover:text-white'
                 }`}
               >
@@ -80,37 +80,37 @@ export const BlogPage: React.FC = () => {
       </section>
 
       {/* Articles Grid / Empty State */}
-      <section className="w-full py-6 pb-24">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <section className="w-full py-4 pb-20 sm:pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               {filteredPosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group"
+                  className="rounded-2xl sm:rounded-3xl bg-[#0E0E10] border border-[#242428] hover:border-scuba-orchid/60 p-6 sm:p-8 md:p-10 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-semibold tracking-widest text-scuba-orchid uppercase px-3 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/40">
+                      <span className="text-[10px] font-semibold tracking-widest text-scuba-orchid uppercase px-3 py-1 rounded bg-scuba-violet/20 border border-scuba-violet/40 font-mono">
                         {post.category}
                       </span>
-                      <div className="flex items-center space-x-1.5 text-xs text-scuba-muted">
+                      <div className="flex items-center space-x-1.5 text-xs text-scuba-muted font-mono">
                         <Clock className="w-3.5 h-3.5 text-scuba-orchid" />
                         <span>{post.readTime}</span>
                       </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-scuba-orchid transition-colors duration-300">
+                    <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-scuba-orchid transition-colors duration-300">
                       <Link to={`/blog/${post.slug}`}>
                         {post.title}
                       </Link>
                     </h2>
 
-                    <p className="text-sm text-[#A6A6A6] leading-relaxed mb-6">
+                    <p className="text-xs sm:text-sm text-[#A6A6A6] leading-relaxed mb-6">
                       {post.excerpt}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-6 sm:mb-8">
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
@@ -122,7 +122,7 @@ export const BlogPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-[#1A1A1A] flex items-center justify-between">
+                  <div className="pt-6 border-t border-[#1A1A1A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div className="text-xs text-scuba-muted">
                       <p className="font-semibold text-white">{post.author.name}</p>
                       <p>{post.author.role}</p>
@@ -130,7 +130,7 @@ export const BlogPage: React.FC = () => {
 
                     <Link
                       to={`/blog/${post.slug}`}
-                      className="inline-flex items-center space-x-1.5 text-xs font-semibold tracking-wider text-scuba-orchid hover:text-white transition-colors"
+                      className="inline-flex items-center space-x-1.5 text-xs font-semibold tracking-wider text-scuba-orchid hover:text-white transition-colors py-1 min-h-[36px]"
                     >
                       <span>READ PAPER</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -140,23 +140,16 @@ export const BlogPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            /* Empty State as required by PRD BLOG-5 */
-            <div className="p-16 rounded-3xl bg-[#0E0E10] border border-[#242428] text-center max-w-2xl mx-auto">
-              <BookOpen className="w-12 h-12 text-scuba-orchid mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">
-                Articles are coming soon.
-              </h3>
-              <p className="text-sm text-[#A6A6A6] leading-relaxed mb-6">
-                Our engineering team is currently preparing deep-dive architectural breakdowns for this category. Check back shortly or subscribe to updates.
-              </p>
+            <div className="text-center py-16 bg-[#0E0E10] rounded-3xl border border-[#242428] p-8">
+              <p className="text-sm text-[#A6A6A6] mb-4">No insights found matching your search.</p>
               <button
                 onClick={() => {
-                  setSelectedCategory('All');
                   setSearchQuery('');
+                  setSelectedCategory('All');
                 }}
-                className="px-6 py-2.5 rounded-full bg-scuba-violet hover:bg-scuba-orchid text-white text-xs font-semibold tracking-wider transition-colors"
+                className="px-5 py-2.5 bg-scuba-violet hover:bg-scuba-orchid text-white text-xs font-semibold tracking-wider rounded-full transition-colors min-h-[44px]"
               >
-                Reset Filters
+                CLEAR FILTERS
               </button>
             </div>
           )}
