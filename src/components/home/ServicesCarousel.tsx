@@ -203,6 +203,17 @@ export const ServicesCarousel: React.FC = () => {
                 <motion.div
                   key={service.id}
                   onClick={() => setActiveIndex(index)}
+                  drag={isCenter ? "x" : false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.15}
+                  onDragEnd={(_, { offset: dragOffset, velocity }) => {
+                    const swipeConfidence = Math.abs(dragOffset.x) * velocity.x;
+                    if (swipeConfidence < -8000 || dragOffset.x < -50) {
+                      nextSlide();
+                    } else if (swipeConfidence > 8000 || dragOffset.x > 50) {
+                      prevSlide();
+                    }
+                  }}
                   initial={false}
                   animate={{
                     x: `${offset * 105}%`,
