@@ -84,14 +84,6 @@ export const ContactPage: React.FC = () => {
       'business-growth-consultancy': 'Business Growth Consultancy',
     };
 
-    const budgetLabels: Record<string, string> = {
-      'under-5k': '< $5,000',
-      '5k-15k': '$5,000 – $15,000',
-      '15k-30k': '$15,000 – $30,000',
-      '30k-plus': '$30,000+',
-      'retainer': 'Monthly Retainer',
-    };
-
     const timelineLabels: Record<string, string> = {
       'immediate': 'Immediate (< 4 weeks)',
       '1-3-months': '1 – 3 months',
@@ -104,9 +96,7 @@ export const ContactPage: React.FC = () => {
       : 'General Project Discussion / Cross-Division';
     const business = data.businessName.trim() || 'Not specified';
     const phone = data.phone.trim() || 'Not specified';
-    const budget = data.budget
-      ? budgetLabels[data.budget] || data.budget
-      : 'Not specified';
+    const budget = data.budget.trim() || 'Not specified';
     const timeline = data.timeline
       ? timelineLabels[data.timeline] || data.timeline
       : 'Not specified';
@@ -426,19 +416,14 @@ export const ContactPage: React.FC = () => {
                   <label htmlFor="budget" className="block text-xs font-semibold tracking-wider text-white uppercase mb-2">
                     Estimated Budget (Optional)
                   </label>
-                  <select
+                  <input
+                    type="text"
                     id="budget"
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white focus:outline-none focus:border-scuba-orchid transition-colors cursor-pointer"
-                  >
-                    <option value="">Select an estimated range</option>
-                    <option value="under-5k">&lt; $5,000</option>
-                    <option value="5k-15k">$5,000 – $15,000</option>
-                    <option value="15k-30k">$15,000 – $30,000</option>
-                    <option value="30k-plus">$30,000+</option>
-                    <option value="retainer">Monthly Retainer</option>
-                  </select>
+                    placeholder="e.g. $10,000 or ₹5,00,000"
+                    className="w-full px-4 py-3 rounded-xl bg-[#08080A] border border-[#242428] text-xs sm:text-sm text-white placeholder-scuba-muted focus:outline-none focus:border-scuba-orchid transition-colors font-sora"
+                  />
                 </div>
 
                 <div>
