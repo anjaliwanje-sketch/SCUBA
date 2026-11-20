@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { ScubaLogo } from '../common/ScubaLogo';
 
 export const Hero: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -170,7 +169,7 @@ export const Hero: React.FC = () => {
                   boxShadow: `0 4px 20px ${tag.glowColor}`,
                 }}
               >
-                <ScubaLogo size={14} className="w-3.5 h-3.5" glow={false} />
+                <span className="w-1.5 h-1.5 rounded-full bg-scuba-orchid shadow-glow-orchid" />
                 <span className="text-[11px] font-semibold text-[#E6E6E6]">{tag.label}</span>
               </motion.div>
           ))}
@@ -183,7 +182,7 @@ export const Hero: React.FC = () => {
               key={tag.id}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#0E0E10] border border-[#242428] text-[10px] text-scuba-lightgray"
             >
-              <ScubaLogo size={12} className="w-3 h-3" glow={false} />
+              <span className="w-1.5 h-1.5 rounded-full bg-scuba-orchid" />
               <span>{tag.label}</span>
             </span>
           ))}

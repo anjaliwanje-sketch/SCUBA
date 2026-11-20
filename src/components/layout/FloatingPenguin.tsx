@@ -41,9 +41,9 @@ export const FloatingPenguin: React.FC = () => {
         {/* Glow backdrop pulse */}
         <div className="absolute inset-0 rounded-full bg-scuba-violet/20 blur-md group-hover:bg-scuba-orchid/30 transition-all duration-300 pointer-events-none" />
 
-        {/* Mascot Image */}
+        {/* Mascot Vector SVG */}
         <img
-          src="/scuba-penguin.png"
+          src="/scuba-penguin.svg"
           alt="SCUBA Penguin Mascot"
           className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(175,105,239,0.3)] select-none"
           loading="lazy"

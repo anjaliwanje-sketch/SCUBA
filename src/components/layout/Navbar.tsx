@@ -86,7 +86,7 @@ export const Navbar: React.FC = () => {
             className="flex items-center space-x-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-scuba-orchid rounded py-1 px-2"
             aria-label="SCUBA home"
           >
-            <ScubaLogo className="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+            <ScubaLogo className="w-7 h-7 sm:w-8 sm:h-8" />
             <span className="text-xl sm:text-2xl font-bold tracking-[0.22em] text-white group-hover:text-scuba-orchid transition-colors duration-300">
               SCUBA
             </span>
