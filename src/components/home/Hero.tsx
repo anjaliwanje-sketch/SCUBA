@@ -91,20 +91,20 @@ export const Hero: React.FC = () => {
               fetchPriority="high"
             />
 
-            {/* Seamless edge gradients: blends outer edges directly into the #000000 dark canvas */}
+            {/* Seamless edge gradients: softly blends outer edges into the #000000 canvas without dimming text pills */}
             {/* Top feather */}
-            <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#000000] via-[#000000]/60 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-10 sm:h-14 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none" />
             {/* Bottom feather */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#000000] via-[#000000]/80 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none" />
             {/* Left feather */}
-            <div className="absolute top-0 bottom-0 left-0 w-24 sm:w-32 bg-gradient-to-r from-[#000000] via-[#000000]/70 to-transparent pointer-events-none" />
+            <div className="absolute top-0 bottom-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#000000] to-transparent pointer-events-none" />
             {/* Right feather */}
-            <div className="absolute top-0 bottom-0 right-0 w-24 sm:w-32 bg-gradient-to-l from-[#000000] via-[#000000]/70 to-transparent pointer-events-none" />
-            {/* Subtle radial vignette feathering around corners */}
+            <div className="absolute top-0 bottom-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#000000] to-transparent pointer-events-none" />
+            {/* Soft vignette feathering on extreme outer edges */}
             <div 
               className="absolute inset-0 pointer-events-none" 
               style={{
-                background: 'radial-gradient(circle at 50% 50%, transparent 60%, #000000 98%)'
+                background: 'radial-gradient(ellipse at 50% 50%, transparent 75%, rgba(0,0,0,0.8) 100%)'
               }}
             />
           </div>
