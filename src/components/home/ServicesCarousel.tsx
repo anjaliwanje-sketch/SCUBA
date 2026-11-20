@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Layers, Search, Cpu, TrendingUp } from 'lucide-react';
 import { servicesData } from '../../data/services';
-import { ScubaLogo } from '../common/ScubaLogo';
 
 export const ServicesCarousel: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -146,50 +145,30 @@ export const ServicesCarousel: React.FC = () => {
 
       </div>
 
-      {/* Cinematic Showcase Container */}
-      <div className="relative w-full overflow-hidden py-4 sm:py-8">
+      {/* Showcase Stage */}
+      <div className="relative w-full overflow-hidden py-4 sm:py-6">
         
-        {/* Top Hairline Indicator Bar */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 mb-4 sm:mb-6 flex items-center justify-between text-[11px] font-mono text-scuba-muted border-b border-[#1A1A1A] pb-3 overflow-x-auto no-scrollbar">
+        {/* Top Division Indicator Bar - Clean & Centered */}
+        <div className="max-w-xl mx-auto px-4 mb-6 sm:mb-8 flex items-center justify-center space-x-6 sm:space-x-8 text-xs font-mono border-b border-[#1A1A1A] pb-3">
           {servicesData.map((service, idx) => (
             <button
               key={service.id}
               onClick={() => setActiveIndex(idx)}
-              className={`flex items-center space-x-1.5 sm:space-x-2 transition-colors duration-300 py-1 px-2 rounded min-h-[32px] flex-shrink-0 ${
-                activeIndex === idx ? 'text-scuba-orchid font-bold' : 'text-scuba-muted hover:text-white'
+              className={`relative py-1.5 transition-colors duration-300 font-semibold cursor-pointer ${
+                activeIndex === idx ? 'text-scuba-orchid' : 'text-scuba-muted hover:text-white'
               }`}
             >
               <span>DIV 0{idx + 1}</span>
-              <span className="hidden sm:inline text-[10px] text-scuba-muted/60">// {service.shortTitle}</span>
+              {activeIndex === idx && (
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-scuba-orchid rounded-full" />
+              )}
             </button>
           ))}
         </div>
 
-        {/* Carousel Slider Stage */}
-        <div className="relative w-full h-[520px] sm:h-[600px] flex items-center justify-center">
+        {/* Carousel Slider Stage: Clean, perfectly centered, without obscuring aperture masks */}
+        <div className="relative w-full h-[540px] sm:h-[600px] flex items-center justify-center">
           
-          {/* Top Organic Concave Mask */}
-          <div className="absolute top-0 left-0 w-full h-10 sm:h-20 pointer-events-none z-20">
-            <svg
-              className="w-full h-full text-[#000000] fill-current"
-              viewBox="0 0 1000 100"
-              preserveAspectRatio="none"
-            >
-              <path d="M 0 0 L 1000 0 L 1000 80 C 760 80, 680 0, 500 0 C 320 0, 240 80, 0 80 Z" />
-            </svg>
-          </div>
-
-          {/* Bottom Organic Concave Mask */}
-          <div className="absolute bottom-0 left-0 w-full h-10 sm:h-20 pointer-events-none z-20">
-            <svg
-              className="w-full h-full text-[#000000] fill-current"
-              viewBox="0 0 1000 100"
-              preserveAspectRatio="none"
-            >
-              <path d="M 0 100 L 1000 100 L 1000 20 C 760 20, 680 100, 500 100 C 320 100, 240 20, 0 20 Z" />
-            </svg>
-          </div>
-
           {/* Cards Track with Framer Motion 3D Offset & Snapping */}
           <div className="relative w-full h-full max-w-6xl mx-auto flex items-center justify-center">
             {servicesData.map((service, index) => {
@@ -214,8 +193,8 @@ export const ServicesCarousel: React.FC = () => {
                   initial={false}
                   animate={{
                     x: `${offset * 105}%`,
-                    scale: isCenter ? 1 : 0.88,
-                    opacity: isCenter ? 1 : 0.45,
+                    scale: isCenter ? 1 : 0.9,
+                    opacity: isCenter ? 1 : 0.4,
                     zIndex: isCenter ? 15 : 5,
                     rotateY: offset * -6,
                   }}
@@ -224,51 +203,60 @@ export const ServicesCarousel: React.FC = () => {
                     stiffness: 280,
                     damping: 28,
                   }}
-                  className={`absolute w-[88vw] max-w-[360px] sm:max-w-none sm:w-[460px] md:w-[500px] h-[480px] sm:h-[560px] rounded-[28px] sm:rounded-[32px] border transition-all duration-300 overflow-hidden cursor-pointer shadow-2xl ${
+                  className={`absolute w-[90vw] max-w-[360px] sm:max-w-none sm:w-[460px] md:w-[500px] h-[510px] sm:h-[570px] rounded-3xl border transition-all duration-300 overflow-hidden cursor-pointer shadow-2xl ${
                     isCenter
-                      ? 'border-scuba-orchid/80 shadow-[0_0_50px_-10px_rgba(175,105,239,0.35)]'
+                      ? 'border-scuba-orchid/80 shadow-[0_0_40px_rgba(175,105,239,0.3)] ring-1 ring-scuba-orchid/40'
                       : 'border-[#242428] hover:border-scuba-orchid/40'
                   }`}
                 >
                   {/* Background Artwork specific to division */}
                   {divisionArt[index]}
 
-                  {/* Dark Gradient Overlay for Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#05020a]/85 to-transparent z-10" />
+                  {/* Dark Gradient Overlay for optimal readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#05020a]/85 to-[#000000]/60 z-10" />
 
                   {/* Content Container */}
                   <div className="relative z-10 w-full h-full p-6 sm:p-8 md:p-10 flex flex-col justify-between">
                     
-                    {/* Top Row: Index + Icon Motif */}
+                    {/* Top Row: Mascot/Logo + Division Index & Icon */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <ScubaLogo className="w-5 h-5 flex-shrink-0" glow={false} />
+                      <div className="flex items-center space-x-2.5">
+                        <img
+                          src="/scuba-penguin.svg"
+                          alt="SCUBA mascot"
+                          className="w-6 h-6 object-contain filter drop-shadow-[0_2px_4px_rgba(175,105,239,0.3)]"
+                        />
                         <span className="text-xs font-mono font-bold text-white tracking-widest uppercase">
                           Division 0{index + 1}
                         </span>
                       </div>
-                      <div className="w-10 h-10 rounded-xl bg-[#140722]/80 border border-scuba-orchid/40 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-[#140722]/90 border border-scuba-orchid/50 flex items-center justify-center">
                         {divisionIcons[index]}
                       </div>
                     </div>
 
-                    {/* Middle Section: Title, Subtitle, Deliverables */}
+                    {/* Middle Section: Title, Subtitle, Description, Deliverables */}
                     <div className="my-auto py-2">
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">
                         {service.title}
                       </h3>
-                      <p className="text-xs sm:text-sm font-medium text-scuba-orchid mb-3 sm:mb-4">
+                      <p className="text-xs sm:text-sm font-semibold text-scuba-orchid mb-3 leading-snug">
                         {service.tagline}
                       </p>
                       <p className="text-xs sm:text-sm text-[#A6A6A6] line-clamp-3 leading-relaxed mb-4">
                         {service.description}
                       </p>
 
-                      {/* Deliverables snippet */}
+                      {/* Deliverables Section with purple checkmarks */}
+                      <p className="text-[10px] sm:text-xs font-mono font-semibold tracking-wider text-scuba-orchid uppercase mb-2">
+                        KEY DELIVERABLES:
+                      </p>
                       <div className="space-y-1.5 sm:space-y-2">
-                        {service.deliverables.slice(0, 3).map((item) => (
+                        {service.deliverables.slice(0, 4).map((item) => (
                           <div key={item} className="flex items-start space-x-2 text-[11px] sm:text-xs text-[#DCDCDC]">
-                            <Check className="w-3.5 h-3.5 text-scuba-orchid flex-shrink-0 mt-0.5" />
+                            <div className="w-4 h-4 rounded-full bg-scuba-violet/30 border border-scuba-orchid/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Check className="w-2.5 h-2.5 text-scuba-orchid" />
+                            </div>
                             <span className="line-clamp-1">{item}</span>
                           </div>
                         ))}
@@ -288,7 +276,7 @@ export const ServicesCarousel: React.FC = () => {
 
                       <Link
                         to={`/contact?service=${service.id}`}
-                        className="text-xs text-scuba-orchid hover:underline font-mono py-1 min-h-[36px] flex items-center"
+                        className="text-xs text-scuba-orchid hover:underline font-mono py-1 min-h-[36px] flex items-center font-medium"
                         onClick={(e) => e.stopPropagation()}
                       >
                         Enquire →
