@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { ScubaLogo } from '../common/ScubaLogo';
 
 export const Footer: React.FC = () => {
   const currentYear = 2026;
@@ -52,7 +53,8 @@ export const Footer: React.FC = () => {
           
           {/* Brand Column (2 cols wide on LG) */}
           <div className="lg:col-span-2 flex flex-col space-y-6">
-            <Link to="/" className="flex items-center space-x-2 text-white group w-fit">
+            <Link to="/" className="flex items-center space-x-2.5 text-white group w-fit">
+              <ScubaLogo className="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
               <span className="text-2xl font-bold tracking-[0.22em] group-hover:text-scuba-orchid transition-colors duration-300">
                 SCUBA
               </span>

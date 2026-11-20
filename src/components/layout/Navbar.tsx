@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { ScubaLogo } from '../common/ScubaLogo';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -85,12 +86,7 @@ export const Navbar: React.FC = () => {
             className="flex items-center space-x-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-scuba-orchid rounded py-1 px-2"
             aria-label="SCUBA home"
           >
-            <div className="w-6 h-6 flex items-center justify-center text-scuba-orchid group-hover:text-white transition-colors duration-300">
-              {/* Subtle SCUBA Insignia / Compass star */}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9 12 2" />
-              </svg>
-            </div>
+            <ScubaLogo className="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
             <span className="text-xl sm:text-2xl font-bold tracking-[0.22em] text-white group-hover:text-scuba-orchid transition-colors duration-300">
               SCUBA
             </span>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles, Layers, Search, Cpu, TrendingUp } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { ScubaLogo } from '../common/ScubaLogo';
 
 export const Hero: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -11,8 +12,6 @@ export const Hero: React.FC = () => {
     {
       id: 'web-dev',
       label: 'Web Development',
-      icon: Layers,
-      // Desktop positioning flanking the portrait
       pos: 'top-[18%] left-[4%] sm:left-[8%] lg:left-[14%]',
       floatDelay: 0,
       glowColor: 'rgba(175, 105, 239, 0.4)'
@@ -20,7 +19,6 @@ export const Hero: React.FC = () => {
     {
       id: 'app-dev',
       label: 'App Development',
-      icon: Cpu,
       pos: 'top-[36%] left-[2%] sm:left-[5%] lg:left-[8%]',
       floatDelay: 0.6,
       glowColor: 'rgba(113, 1, 147, 0.4)'
@@ -28,7 +26,6 @@ export const Hero: React.FC = () => {
     {
       id: 'ai-auto',
       label: 'AI Automation',
-      icon: Sparkles,
       pos: 'bottom-[28%] left-[4%] sm:left-[8%] lg:left-[12%]',
       floatDelay: 1.2,
       glowColor: 'rgba(175, 105, 239, 0.4)'
@@ -36,7 +33,6 @@ export const Hero: React.FC = () => {
     {
       id: 'seo-aeo',
       label: 'SEO · AEO · GEO',
-      icon: Search,
       pos: 'top-[18%] right-[4%] sm:right-[8%] lg:left-[68%]',
       floatDelay: 0.3,
       glowColor: 'rgba(175, 105, 239, 0.4)'
@@ -44,7 +40,6 @@ export const Hero: React.FC = () => {
     {
       id: 'growth-strat',
       label: 'Growth Strategy',
-      icon: TrendingUp,
       pos: 'top-[42%] right-[2%] sm:right-[5%] lg:left-[74%]',
       floatDelay: 0.9,
       glowColor: 'rgba(113, 1, 147, 0.4)'
@@ -52,7 +47,6 @@ export const Hero: React.FC = () => {
     {
       id: 'digital-exp',
       label: 'Digital Experience',
-      icon: Layers,
       pos: 'bottom-[24%] right-[4%] sm:right-[8%] lg:left-[64%]',
       floatDelay: 1.5,
       glowColor: 'rgba(175, 105, 239, 0.4)'
@@ -151,10 +145,8 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Floating Pill Badges (FR-HERO-3) */}
-          {floatingTags.map((tag) => {
-            const Icon = tag.icon;
-            return (
-              <motion.div
+          {floatingTags.map((tag) => (
+            <motion.div
                 key={tag.id}
                 animate={
                   shouldReduceMotion
@@ -178,12 +170,10 @@ export const Hero: React.FC = () => {
                   boxShadow: `0 4px 20px ${tag.glowColor}`,
                 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-scuba-orchid shadow-glow-orchid" />
-                <Icon className="w-3.5 h-3.5 text-scuba-orchid" />
+                <ScubaLogo size={14} className="w-3.5 h-3.5" glow={false} />
                 <span className="text-[11px] font-semibold text-[#E6E6E6]">{tag.label}</span>
               </motion.div>
-            );
-          })}
+          ))}
         </motion.div>
 
         {/* Mobile Floating Tags Grid (visible on smaller screens below portrait to avoid crowding) */}
@@ -193,7 +183,7 @@ export const Hero: React.FC = () => {
               key={tag.id}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#0E0E10] border border-[#242428] text-[10px] text-scuba-lightgray"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-scuba-orchid" />
+              <ScubaLogo size={12} className="w-3 h-3" glow={false} />
               <span>{tag.label}</span>
             </span>
           ))}
